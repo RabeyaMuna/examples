@@ -1,15 +1,6 @@
 name: Run Python Examples
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  schedule:
-    # Every day at 3:00am
-    - cron: '0 3 * * *'
-
-
+on: push
 jobs:
   test:
 
@@ -25,8 +16,8 @@ jobs:
       uses: astral-sh/setup-uv@v6
     - name: Run Tests
       env:
-        VIRTUAL_ENV: '.venv'
-        PIP_INSTAL_ARGS: '--pre -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html'
+        VIRTUAL_ENV: .venv
+        PIP_INSTAL_ARGS: --pre -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
       run: |
         ./run_python_examples.sh
     - name: Open issue on failure
@@ -35,5 +26,7 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         title: Daily CI failed
-        body:  Commit ${{ github.sha }} daily scheduled [CI run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed, please check why
+        body: Commit ${{ github.sha }} daily scheduled [CI run](https://github.com/${{
+          github.repository }}/actions/runs/${{ github.run_id }}) failed, please check
+          why
         assignees: ''
